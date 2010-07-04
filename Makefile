@@ -13,6 +13,8 @@ ALLSPHINXOPTS   = -d build/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
 
 .PHONY: help clean html web pickle htmlhelp latex changes linkcheck
 
+all: html
+
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
 	@echo "  html      to make standalone HTML files"
@@ -29,6 +31,10 @@ test:
 	nosetests -v --with-doctest --doctest-tests --doctest-extension=rst source/*[a-z].rst source/summary-exercices/*.rst
 
 sources:
+
+pdf: latex
+	make -C build/latex all-pdf < /dev/null > build/latex.log 2>&1 \
+		|| { cat build/latex.log; exit 1; }
 
 html: sources
 	mkdir -p build/html build/doctrees

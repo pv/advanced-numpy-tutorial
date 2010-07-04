@@ -2,6 +2,71 @@
  * Sphinx Doc Design
  */
 
+td > p
+{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+div.body div.section-parent > h1,
+div.body div.section-parent > h2,
+div.body div.section-parent > h3,
+div.body div.section-parent > h4,
+div.body div.section-parent > h5,
+div.body div.section-parent > h6
+{
+    font-size: 16pt;
+    background-color: #133f52;
+}
+
+div.body div.section-parent h1 a,
+div.body div.section-parent h2 a,
+div.body div.section-parent h3 a,
+div.body div.section-parent h4 a,
+div.body div.section-parent h5 a,
+div.body div.section-parent > h1,
+div.body div.section-parent > h2,
+div.body div.section-parent > h3,
+div.body div.section-parent > h4,
+div.body div.section-parent > h5
+{
+    color: white;
+    margin-top: 0;
+    margin-bottom: 0;
+    border: none;
+}
+
+div.body div.section h1,
+div.body div.section h2,
+div.body div.section h3,
+div.body div.section h4,
+div.body div.section h5
+{
+    margin-top: 0;
+}
+
+div.body div.section-only h1,
+div.body div.section-only h2,
+div.body div.section-only h3,
+div.body div.section-only h4
+{
+    padding-top: 160pt;
+    padding-bottom: 160pt;
+}
+
+div.body table.docutils {
+    border: 1px solid #ccc;
+}
+
+div.related .right {
+    display: none;
+}
+
+div.related li.rightyo {
+    float: right;
+    margin-right: 5px;
+}
+
 body {
     font-family: sans-serif;
     font-size: 150%;
@@ -90,6 +155,7 @@ div.related li.right {
 div.related a {
     color: white;
 }
+
 
 /* ::: TOC :::: */
 div.sphinxsidebar h3 {
@@ -845,3 +911,4 @@ div.footer,
 div#comments div.new-comment-box,
 #top-link {
     display: none;
+}
