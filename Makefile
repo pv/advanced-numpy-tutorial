@@ -79,3 +79,9 @@ linkcheck:
 	@echo
 	@echo "Link check complete; look for any errors in the above output " \
 	      "or in build/linkcheck/output.txt."
+
+upload: html
+	rm -f build/advnumpy.zip
+	(cd build && zip -r9 advnumpy.zip html)
+	suncomet scp build/advnumpy.zip R:public_html/tmp/advnumpy.zip
+

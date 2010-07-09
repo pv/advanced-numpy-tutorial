@@ -242,8 +242,6 @@ When accessing sub-arrays, the dimensions get added to the end!
 Casting and re-interpretation/views
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. explain the difference between .astypes() and .view()
-
 **casting**
 
     - on assignment
@@ -733,23 +731,6 @@ More tricks: diagonals
        </div>
 
 
-.. Reshaping
-.. ^^^^^^^^^
-.. 
-.. Also reshaping arrays is done by adjusting strides and shape:
-.. 
-.. >>> x = np.array([[1, 2, 3], [4, 5, 6]])
-.. >>> y = x.reshape(3, 2)
-.. >>> y
-.. array([[1, 2],
-..        [3, 4],
-..        [5, 6]])
-.. >>> x.strides
-.. (8, 4)
-.. >>> y.strides
-.. (12, 4)
-.. 
-
 CPU cache effects
 ^^^^^^^^^^^^^^^^^
 
@@ -791,36 +772,35 @@ Memory layout can affect performance:
    Much more about this in the next session (Francesc Alted) today!
 
 
-.. Example: inplace operations (caveat emptor)
-.. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. 
-.. - Sometimes,
-.. 
-..   >>> a -= b
-.. 
-..   is not the same as
-.. 
-..   >>> a -= b.copy()
-.. 
-.. >>> x = np.array([[1, 2], [3, 4]])
-.. >>> x -= x.transpose()
-.. >>> x
-.. array([[ 0, -1],
-..        [ 4,  0]])
-.. 
-.. >>> y = np.array([[1, 2], [3, 4]])
-.. >>> y -= y.T.copy()
-.. >>> y
-.. array([[ 0, -1],
-..        [ 1,  0]])
-.. 
-.. - ``x`` and ``x.transpose()`` share data
-.. 
-.. - ``x -= x.transpose()`` modifies the data element-by-element...
-.. 
-.. - because ``x`` and ``x.transpose()`` have different striding,
-..   modified data re-appears on the RHS
+Example: inplace operations (caveat emptor)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+- Sometimes,
+
+  >>> a -= b
+
+  is not the same as
+
+  >>> a -= b.copy()
+
+>>> x = np.array([[1, 2], [3, 4]])
+>>> x -= x.transpose()
+>>> x
+array([[ 0, -1],
+       [ 4,  0]])
+
+>>> y = np.array([[1, 2], [3, 4]])
+>>> y -= y.T.copy()
+>>> y
+array([[ 0, -1],
+       [ 1,  0]])
+
+- ``x`` and ``x.transpose()`` share data
+
+- ``x -= x.transpose()`` modifies the data element-by-element...
+
+- because ``x`` and ``x.transpose()`` have different striding,
+  modified data re-appears on the RHS
 
 Findings in dissection
 ----------------------
@@ -1042,9 +1022,6 @@ E.g. supporting both single- and double-precision versions
        )
 
 
-
-.. Example: accumulate, reduce, reduceat
-.. -------------------------------------
 
 Generalized ufuncs
 ------------------
@@ -1364,14 +1341,6 @@ PEP 3118 -- details
 
 .. literalinclude:: ../data/myobject-answer.c
 
-.. Numpy-provided facilities for C extensions
-.. ==========================================
-.. 
-.. npy_math
-.. --------
-.. 
-.. Array iterators
-.. ---------------
 
 Siblings: :class:`chararray`, :class:`maskedarray`, :class:`matrix`
 ===================================================================
@@ -1483,3 +1452,205 @@ Hit list of the future for Numpy core
   >>> a = a + b
 
   Preferably without sacrificing too much performance-wise...
+
+
+Contributing to Numpy/Scipy
+===========================
+
+    Get this tutorial: http://www.euroscipy.org/talk/882
+
+Why
+---
+
+- "There's a bug?"
+
+- "I don't understand what this is supposed to do?"
+
+- "I have this fancy code. Would you like to have it?"
+
+- "I'd like to help! What can I do?"
+
+Reporting bugs
+--------------
+
+- Bug tracker (prefer **this**)
+
+  - http://projects.scipy.org/numpy
+
+  - http://projects.scipy.org/scipy
+
+  - Click the "Register" link to get an account
+
+- Mailing lists ( scipy.org/Mailing_Lists )
+
+  - If you're unsure
+
+  - No replies in a week or so? Just file a bug ticket.
+
+
+.. rubric:: Good bug report
+
+::
+
+    Title: numpy.random.permutations fails for non-integer arguments
+
+    I'm trying to generate random permutations, using numpy.random.permutations
+
+    When calling numpy.random.permutation with non-integer arguments 
+    it fails with a cryptic error message:
+
+    >>> np.random.permutation(12)
+    array([10,  9,  4,  7,  3,  8,  0,  6,  5,  1, 11,  2])
+    >>> np.random.permutation(long(12))
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+      File "mtrand.pyx", line 3311, in mtrand.RandomState.permutation
+      File "mtrand.pyx", line 3254, in mtrand.RandomState.shuffle
+    TypeError: len() of unsized object
+
+    This also happens with long arguments, and so
+    np.random.permutation(X.shape[0]) where X is an array fails on 64
+    bit windows (where shape is a tuple of longs).
+
+    It would be great if it could cast to integer or at least raise a
+    proper error for non-integer types.
+
+    I'm using Numpy 1.4.1, built from the official tarball, on Windows
+    64 with Visual studio 2008, on Python.org 64-bit Python.
+
+0. What are you trying to do?
+
+1. **Small code snippet reproducing the bug** (if possible)
+
+   - What actually happens
+
+   - What you'd expect
+
+2. Platform (Windows / Linux / OSX, 32/64 bits, x86/PPC, ...)
+
+3. Version of Numpy/Scipy
+
+   >>> print numpy.__version__
+
+   **Check that the following is what you expect**
+
+   >>> print numpy.__file__
+
+   In case you have old/broken Numpy installations lying around.
+
+   If unsure, try to remove existing Numpy installations, and reinstall...
+
+Contributing to documentation
+-----------------------------
+
+1. Documentation editor
+
+   - http://docs.scipy.org/numpy
+
+   - Registration
+
+     - Register an account
+
+     - Subscribe to ``scipy-dev`` ML  (subscribers-only)
+
+     - Problem with mailing lists: you get mail
+
+       - But: **you can turn mail delivery off**
+
+       - "change your subscription options", at the bottom of 
+
+         http://mail.scipy.org/mailman/listinfo/scipy-dev
+
+     - Send a mail @ ``scipy-dev`` mailing list; ask for activation::
+
+          To: scipy-dev@scipy.org
+
+          Hi,
+
+          I'd like to edit Numpy/Scipy docstrings. My account is XXXXX
+
+	  Cheers,
+	  N. N.
+
+    - Check the style guide:
+
+      - http://docs.scipy.org/numpy/
+
+      - Don't be intimidated; to fix a small thing, just fix it
+
+    - Edit
+
+2. Edit sources and send patches (as for bugs)
+
+3. Complain on the ML
+
+
+Contributing features
+---------------------
+
+0. Ask on ML, if unsure where it should go
+
+1. Write a patch, add an enhancement ticket on the bug tracket
+
+2. OR, create a Git branch implementing the feature + add enhancement ticket.
+
+   - Especially for big/invasive additions
+   - http://projects.scipy.org/numpy/wiki/GitMirror
+   - http://www.spheredev.org/wiki/Git_for_the_lazy
+
+   ::
+
+      # Clone numpy repository
+      git clone --origin svn http://projects.scipy.org/git/numpy.git numpy
+      cd numpy
+
+      # Create a feature branch
+      git checkout -b name-of-my-feature-branch  svn/trunk
+
+      <edit stuff>
+
+      git commit -a
+
+   - Create account on http://github.com  (or anywhere)
+
+   - Create a new repository @ Github
+
+   - Push your work to github
+
+   ::
+
+       git remote add github git@github:YOURUSERNAME/YOURREPOSITORYNAME.git
+       git push github name-of-my-feature-branch
+
+How to help, in general
+-----------------------
+
+- Bug fixes always welcome! 
+
+  - What irks you most
+  - Browse the tracker
+
+- Documentation work
+
+  - API docs: improvements to docstrings
+
+    - Know some Scipy module well?
+
+  - *User guide*
+
+    - Needs to be done eventually.
+
+    - Want to think? Come up with a Table of Contents
+
+      http://scipy.org/Developer_Zone/UG_Toc
+
+- Ask on communication channels:
+
+  - ``numpy-discussion`` list
+  - ``scipy-dev`` list
+  - or now @ Euroscipy :)
+
+
+Supporting Python 2 and 3; in a code base
+=========================================
+
