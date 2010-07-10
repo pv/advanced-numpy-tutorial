@@ -1651,6 +1651,67 @@ How to help, in general
   - or now @ Euroscipy :)
 
 
-Supporting Python 2 and 3; in a code base
-=========================================
+Python 2 and 3, single code base
+================================
 
+- The brave new future?
+
+- You can do it!
+
+
+The case of Numpy
+-----------------
+
+- 150 000+ SLOC
+
+- Numpy is complicated (PyString, PyInt, buffer interfaces, ...)!
+
+Porting:
+
+- Python 2 and 3, with a single code base
+
+- Took ca. **2-3 man-weeks**
+
+- ``git log --grep="3K" -M -C -p | filterdiff -x '*/mtrand.c' | diffstat | tail -n1``
+
+  ``207 files changed, 5626 insertions(+), 2836 deletions(-)``
+
+The case of Scipy
+-----------------
+
+- WIP
+
+- But is much easier: very little string handing etc.
+
+How?
+----
+
+- http://projects.scipy.org/numpy/browser/trunk/doc/Py3K.txt
+
+  (A bit out of date, but illustrative.)
+
+- Python changes:
+
+  - ``2to3`` on ``setup.py build``
+
+  - Compatibility package ``numpy.compat.py3k``
+
+  - ``str`` vs. ``bytes``, cyclic imports, ``types`` module, ...
+
+- C changes:
+
+  - Compatibility header ``npy_3kcompat.h``
+
+  - Module & type initialization
+
+  - Buffer interface (provider)
+
+  - Strings: (i) Unicode on 2+3, (ii) UC on 3, Bytes on 2, (iii) Bytes on 2+3
+
+  - Division, comparison
+
+  - I/O
+
+  - PyCObject -> PyCapsule
+
+  - ...
